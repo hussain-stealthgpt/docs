@@ -1,0 +1,116 @@
+---
+title: 'Blog Article Generation'
+description: 'Generate complete undetectable blog articles with the /api/stealthify/articles endpoint'
+api: 'POST https://stealthgpt.ai/api/stealthify/articles'
+---
+
+The `/api/stealthify/articles` endpoint generates complete, undetectable blog articles with relevant, high-quality images in markdown format, optimized for SEO.
+
+## Request Parameters
+
+<ParamField body="prompt" type="string" required>
+  The topic or subject for which you want to generate a blog article
+</ParamField>
+
+<ParamField body="withImages" type="boolean" default="true">
+  When set to `true`, includes relevant images in the generated article
+</ParamField>
+
+<ParamField body="size" type="string" default="small">
+  Controls the length of the generated article
+  
+  <Expandable title="Available size options">
+    <ResponseField name="small">
+      Shortest article length, ideal for brief overviews
+    </ResponseField>
+    <ResponseField name="medium">
+      Standard blog article length with moderate detail
+    </ResponseField>
+    <ResponseField name="long">
+      Comprehensive long-form content with in-depth coverage
+    </ResponseField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="isMultilingual" type="boolean" default="true">
+  When `true`, allows the model to generate content in any language based on the prompt's language context
+</ParamField>
+
+## Response
+
+<ResponseField name="markdown" type="string">
+  The complete blog article in markdown format, including images if requested
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+  <CodeBlock title="cURL" language="bash">
+  ```bash
+  curl --request POST \
+    --url https://stealthgpt.ai/api/stealthify/articles \
+    --header 'Content-Type: application/json' \
+    --header 'api-token: YOUR_API_TOKEN' \
+    --data '{
+    "prompt": "Modern backend architecture trends in 2023",
+    "withImages": true,
+    "size": "medium",
+    "isMultilingual": true
+  }'
+  ```
+  </CodeBlock>
+  <CodeBlock title="Python" language="python">
+  ```python
+  import requests
+  
+  response = requests.post(
+      'https://stealthgpt.ai/api/stealthify/articles',
+      headers={
+          'api-token': 'YOUR_API_TOKEN',
+          'Content-Type': 'application/json'
+      },
+      json={
+          'prompt': 'Modern backend architecture trends in 2023',
+          'withImages': True,
+          'size': 'medium',
+          'isMultilingual': True
+      }
+  )
+  
+  print(response.json())
+  ```
+  </CodeBlock>
+  <CodeBlock title="Node.js" language="javascript">
+  ```javascript
+  const axios = require('axios');
+  
+  axios.post('https://stealthgpt.ai/api/stealthify/articles', {
+      prompt: 'Modern backend architecture trends in 2023',
+      withImages: true,
+      size: 'medium',
+      isMultilingual: true
+  }, {
+      headers: {
+          'api-token': 'YOUR_API_TOKEN',
+          'Content-Type': 'application/json'
+      }
+  }).then(response => {
+      console.log(response.data);
+  });
+  ```
+  </CodeBlock>
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "markdown": "# Modern Backend Architecture Trends in 2023\n\n![Modern backend architecture visualization](https://example.com/image1.jpg)\n\n## Introduction\n\nThe landscape of backend development continues to evolve rapidly in 2023, with new paradigms and technologies reshaping how we build and deploy server-side applications...\n\n## Microservices Continue to Dominate\n\nWhile not new to the scene, microservices architecture continues to be refined and optimized in 2023...\n\n[Content continues with full markdown article]"
+}
+```
+
+## Usage Notes
+
+- This endpoint consumes significantly more tokens than the standard `/api/stealthify` endpoint
+- Each article generation costs the equivalent of 50,000 stealth tokens
+- The generated content is optimized for SEO and designed to be undetectable by AI content detection tools 

@@ -1,0 +1,53 @@
+---
+title: 'Authentication'
+description: 'Learn how to authenticate your requests to the StealthGPT API'
+---
+
+## Obtaining Your API Token
+
+To use the StealthGPT API, you'll need an API token that uniquely identifies your account and authorizes your requests.
+
+<Steps>
+  <Step title="Sign Up">
+    Create an account on the [StealthGPT platform](https://stealthgpt.ai)
+  </Step>
+  <Step title="Purchase Tokens">
+    Buy tokens to enable API access
+  </Step>
+  <Step title="Access Your API Token">
+    Find your API token in the StealthGPT dashboard under the "API Key" tab
+  </Step>
+</Steps>
+
+<Warning>
+  Keep your API token secure. Don't share it publicly or commit it to version control systems. Treat it as you would any sensitive credential.
+</Warning>
+
+## Using Your API Token
+
+Include your API token in the headers of all requests to the StealthGPT API.
+
+```bash
+curl --location 'https://stealthgpt.ai/api/stealthify' \
+    --header 'api-token: YOUR_API_TOKEN' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "prompt": "Your content prompt",
+        "rephrase": true,
+        "tone": "professional",
+        "mode": "standard",
+        "business": false
+    }'
+```
+
+<Tip>
+  Replace `YOUR_API_TOKEN` with the actual token from your dashboard.
+</Tip>
+
+## Token Security
+
+If you believe your API token has been compromised:
+
+1. Go to the StealthGPT dashboard under the "API Key" tab
+2. Use the regenerate option to create a new API token
+3. Update your applications with the new token as soon as possible 

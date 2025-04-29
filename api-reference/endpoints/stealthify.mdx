@@ -1,0 +1,144 @@
+---
+title: 'Content Generation and Rephrasing'
+description: 'Generate or rephrase content with the /api/stealthify endpoint'
+api: 'POST https://stealthgpt.ai/api/stealthify'
+---
+
+The `/api/stealthify` endpoint is the core of the StealthGPT API, allowing you to generate new content or rephrase existing text to be undetectable by AI detection tools.
+
+## Request Parameters
+
+<ParamField body="prompt" type="string" required>
+  The text prompt for content generation or the text to be rephrased
+</ParamField>
+
+<ParamField body="rephrase" type="boolean" required>
+  Set to `true` to rephrase the provided prompt text, or `false` to generate new content based on the prompt
+</ParamField>
+
+<ParamField body="tone" type="string">
+  Controls the style and complexity of the generated content
+  
+  <Expandable title="Available tone options">
+    <ResponseField name="Standard" type="default">
+      Ideal for casual writing. Easy to read and understand, suitable for general purposes.
+    </ResponseField>
+    <ResponseField name="HighSchool">
+      Mimics the style of high school level writing. May contain grammatical errors. Scores high on Flesch-Kincaid Readability.
+    </ResponseField>
+    <ResponseField name="College">
+      Semi-complex style typical of college-level writing. May include minor grammatical errors. Moderate Flesch-Kincaid Readability score.
+    </ResponseField>
+    <ResponseField name="PhD">
+      Complex, sophisticated style. No grammatical errors. Low Flesch-Kincaid Readability score, ideal for academic writing.
+    </ResponseField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="mode" type="string">
+  Indicates the detail level of the response
+  
+  <Expandable title="Available mode options">
+    <ResponseField name="High">
+      Maximum detail and elaboration in the response
+    </ResponseField>
+    <ResponseField name="Medium">
+      Balanced level of detail
+    </ResponseField>
+    <ResponseField name="Low">
+      Concise response with minimal detail
+    </ResponseField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="business" type="boolean" default="false">
+  When set to `true`, uses a model 10x more powerful than the standard engine, making content more undetectable and coherent. Consumes more tokens.
+</ParamField>
+
+<ParamField body="isMultilingual" type="boolean" default="true">
+  When `true`, allows the model to produce or work with content in any language based on the prompt's language context.
+</ParamField>
+
+## Response
+
+<ResponseField name="response" type="string">
+  The generated or rephrased content
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+  <CodeBlock title="cURL" language="bash">
+  ```bash
+  curl --location 'https://stealthgpt.ai/api/stealthify' \
+      --header 'api-token: YOUR_API_TOKEN' \
+      --header 'Content-Type: application/json' \
+      --data '{
+          "prompt": "Explain the benefits of renewable energy",
+          "rephrase": false,
+          "tone": "College",
+          "mode": "Medium",
+          "business": false,
+          "isMultilingual": true
+      }'
+  ```
+  </CodeBlock>
+  <CodeBlock title="Python" language="python">
+  ```python
+  import requests
+  
+  response = requests.post(
+      'https://stealthgpt.ai/api/stealthify',
+      headers={
+          'api-token': 'YOUR_API_TOKEN',
+          'Content-Type': 'application/json'
+      },
+      json={
+          'prompt': 'Explain the benefits of renewable energy',
+          'rephrase': False,
+          'tone': 'College',
+          'mode': 'Medium',
+          'business': False,
+          'isMultilingual': True
+      }
+  )
+  
+  print(response.json())
+  ```
+  </CodeBlock>
+  <CodeBlock title="Node.js" language="javascript">
+  ```javascript
+  const axios = require('axios');
+  
+  axios.post('https://stealthgpt.ai/api/stealthify', {
+      prompt: 'Explain the benefits of renewable energy',
+      rephrase: false,
+      tone: 'College',
+      mode: 'Medium',
+      business: false,
+      isMultilingual: true
+  }, {
+      headers: {
+          'api-token': 'YOUR_API_TOKEN',
+          'Content-Type': 'application/json'
+      }
+  }).then(response => {
+      console.log(response.data);
+  });
+  ```
+  </CodeBlock>
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "response": "Renewable energy offers several significant advantages in our modern world. Students and researchers point to multiple benefits like reduced carbon emissions, which helps fight climate change. These energy sources, including solar and wind power, represent inexhaustible resources unlike finite fossil fuels. Many communities find economic advantages through job creation in the growing renewable sector. Additionally, these technologies typically require less maintenance after installation and reduce dependency on foreign energy imports. Advancements continue making these options more cost-competitive, with prices dropping significantly over recent years. While challenges exist in implementation, the long-term benefits to environmental health, economic stability, and energy independence make renewable energy sources increasingly attractive options for our global energy needs."
+}
+```
+
+## Usage Notes
+
+- For optimal performance, we recommend keeping responses under 2,000 characters
+- The quality and relevance of generated content depends on the phrasing of your prompts
+- For more advanced usage techniques, see our [Advanced Usage Guide](/api-reference/advanced-usage) 

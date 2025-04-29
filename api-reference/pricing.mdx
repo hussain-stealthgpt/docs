@@ -1,0 +1,85 @@
+---
+title: 'Pricing'
+description: 'Understand the token-based pricing model for StealthGPT API'
+---
+
+# Pricing
+
+StealthGPT API uses a token-based pricing model. You purchase tokens in advance and consume them as you make API requests.
+
+## Token Bundles
+
+<CardGroup cols={3}>
+  <Card title="Starter" icon="seedling">
+    **200,000 tokens**
+    
+    $10
+    
+    No discount
+  </Card>
+  <Card title="Professional" icon="briefcase">
+    **2,010,000 tokens**
+    
+    $100
+    
+    5% discount
+  </Card>
+  <Card title="Enterprise" icon="building">
+    **22,500,000 tokens**
+    
+    $1,000
+    
+    10% discount
+  </Card>
+</CardGroup>
+
+## Token Consumption Rates
+
+Different endpoints and settings consume tokens at different rates:
+
+<Table>
+  <thead>
+    <tr>
+      <th>Endpoint</th>
+      <th>Setting</th>
+      <th>Token Conversion Rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">/api/stealthify</td>
+      <td>Standard (business=false)</td>
+      <td>1 standard token = 1 stealth token</td>
+    </tr>
+    <tr>
+      <td>Business (business=true)</td>
+      <td>1 business token = 10 stealth tokens</td>
+    </tr>
+    <tr>
+      <td>/api/stealthify/articles</td>
+      <td>Any</td>
+      <td>1 article generation = 50,000 stealth tokens</td>
+    </tr>
+  </tbody>
+</Table>
+
+<Note>
+  The business mode uses a model that is 10x more powerful than the standard engine, providing higher quality and more undetectable content, but it consumes tokens at a higher rate.
+</Note>
+
+## Rate Limits
+
+StealthGPT API has the following rate limits to ensure optimal performance and fair usage:
+
+- **3,500 RPM** (Requests Per Minute)
+- **350,000 TPM** (Tokens Per Minute)
+
+## Custom Volume Pricing
+
+<Card title="Need higher volumes?" icon="chart-line">
+  For larger use cases, we offer custom pricing packages. Contact us at support@stealthgpt.ai with details about your use case and estimated monthly token requirements for a tailored quote.
+</Card>
+
+## Purchasing Tokens
+
+To purchase additional tokens, sign in to your StealthGPT account and visit the dashboard. You can buy token bundles directly through the platform's secure payment system. 

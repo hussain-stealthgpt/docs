@@ -1,0 +1,517 @@
+---
+title: 'Code Examples'
+description: 'Implementation examples for StealthGPT API in various programming languages'
+---
+
+# Code Examples
+
+This page provides ready-to-use code examples for integrating the StealthGPT API in various programming languages.
+
+## Python
+
+<Tabs>
+  <Tab title="Content Generation">
+    ```python
+    import requests
+    
+    def generate_content(prompt, tone=None, mode=None, business=False, is_multilingual=True):
+        """
+        Generate content using StealthGPT API
+        
+        Args:
+            prompt (str): The prompt for content generation
+            tone (str, optional): Standard, HighSchool, College, or PhD
+            mode (str, optional): High, Medium, or Low detail level
+            business (bool, optional): Whether to use business mode
+            is_multilingual (bool, optional): Whether to allow multilingual output
+            
+        Returns:
+            str: Generated content
+        """
+        api_token = 'YOUR_API_TOKEN'
+        url = 'https://stealthgpt.ai/api/stealthify'
+        
+        # Prepare request payload
+        payload = {
+            'prompt': prompt,
+            'rephrase': False
+        }
+        
+        # Add optional parameters if provided
+        if tone:
+            payload['tone'] = tone
+        if mode:
+            payload['mode'] = mode
+        if business:
+            payload['business'] = business
+        if not is_multilingual:
+            payload['isMultilingual'] = is_multilingual
+            
+        # Set headers
+        headers = {
+            'api-token': api_token,
+            'Content-Type': 'application/json'
+        }
+        
+        # Send request
+        response = requests.post(url, headers=headers, json=payload)
+        
+        # Check for successful response
+        if response.status_code == 200:
+            return response.json()['response']
+        else:
+            raise Exception(f"Error {response.status_code}: {response.text}")
+            
+    # Example usage
+    content = generate_content(
+        prompt="Explain the benefits of cloud computing for small businesses",
+        tone="College",
+        mode="Medium"
+    )
+    print(content)
+    ```
+  </Tab>
+  <Tab title="Content Rephrasing">
+    ```python
+    import requests
+    
+    def rephrase_content(text, tone=None, mode=None, business=False, is_multilingual=True):
+        """
+        Rephrase content using StealthGPT API
+        
+        Args:
+            text (str): The text to rephrase
+            tone (str, optional): Standard, HighSchool, College, or PhD
+            mode (str, optional): High, Medium, or Low detail level
+            business (bool, optional): Whether to use business mode
+            is_multilingual (bool, optional): Whether to allow multilingual output
+            
+        Returns:
+            str: Rephrased content
+        """
+        api_token = 'YOUR_API_TOKEN'
+        url = 'https://stealthgpt.ai/api/stealthify'
+        
+        # Prepare request payload
+        payload = {
+            'prompt': text,
+            'rephrase': True
+        }
+        
+        # Add optional parameters if provided
+        if tone:
+            payload['tone'] = tone
+        if mode:
+            payload['mode'] = mode
+        if business:
+            payload['business'] = business
+        if not is_multilingual:
+            payload['isMultilingual'] = is_multilingual
+            
+        # Set headers
+        headers = {
+            'api-token': api_token,
+            'Content-Type': 'application/json'
+        }
+        
+        # Send request
+        response = requests.post(url, headers=headers, json=payload)
+        
+        # Check for successful response
+        if response.status_code == 200:
+            return response.json()['response']
+        else:
+            raise Exception(f"Error {response.status_code}: {response.text}")
+            
+    # Example usage
+    rephrased = rephrase_content(
+        text="Artificial intelligence is transforming many industries by automating tasks that previously required human intelligence.",
+        tone="PhD"
+    )
+    print(rephrased)
+    ```
+  </Tab>
+  <Tab title="Article Generation">
+    ```python
+    import requests
+    
+    def generate_article(topic, with_images=True, size="medium", is_multilingual=True):
+        """
+        Generate a complete blog article using StealthGPT API
+        
+        Args:
+            topic (str): The topic for the article
+            with_images (bool, optional): Whether to include images
+            size (str, optional): "small", "medium", or "long"
+            is_multilingual (bool, optional): Whether to allow multilingual output
+            
+        Returns:
+            str: Markdown content of the generated article
+        """
+        api_token = 'YOUR_API_TOKEN'
+        url = 'https://stealthgpt.ai/api/stealthify/articles'
+        
+        # Prepare request payload
+        payload = {
+            'prompt': topic,
+            'withImages': with_images,
+            'size': size
+        }
+        
+        if not is_multilingual:
+            payload['isMultilingual'] = is_multilingual
+            
+        # Set headers
+        headers = {
+            'api-token': api_token,
+            'Content-Type': 'application/json'
+        }
+        
+        # Send request
+        response = requests.post(url, headers=headers, json=payload)
+        
+        # Check for successful response
+        if response.status_code == 200:
+            return response.json()['markdown']
+        else:
+            raise Exception(f"Error {response.status_code}: {response.text}")
+            
+    # Example usage
+    article = generate_article(
+        topic="The future of remote work in the tech industry",
+        size="medium"
+    )
+    print(article)
+    ```
+  </Tab>
+</Tabs>
+
+## Node.js
+
+<Tabs>
+  <Tab title="Content Generation">
+    ```javascript
+    const axios = require('axios');
+    
+    /**
+     * Generate content using StealthGPT API
+     * 
+     * @param {string} prompt - The prompt for content generation
+     * @param {Object} options - Optional parameters
+     * @param {string} options.tone - Standard, HighSchool, College, or PhD
+     * @param {string} options.mode - High, Medium, or Low detail level
+     * @param {boolean} options.business - Whether to use business mode
+     * @param {boolean} options.isMultilingual - Whether to allow multilingual output
+     * @returns {Promise<string>} - Generated content
+     */
+    async function generateContent(prompt, options = {}) {
+      const apiToken = 'YOUR_API_TOKEN';
+      const url = 'https://stealthgpt.ai/api/stealthify';
+      
+      // Prepare request payload
+      const payload = {
+        prompt,
+        rephrase: false,
+        ...options
+      };
+      
+      try {
+        // Send request
+        const response = await axios.post(url, payload, {
+          headers: {
+            'api-token': apiToken,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        return response.data.response;
+      } catch (error) {
+        if (error.response) {
+          throw new Error(`Error ${error.response.status}: ${JSON.stringify(error.response.data)}`);
+        } else {
+          throw error;
+        }
+      }
+    }
+    
+    // Example usage
+    generateContent(
+      'Explain the benefits of cloud computing for small businesses',
+      {
+        tone: 'College',
+        mode: 'Medium'
+      }
+    )
+      .then(content => console.log(content))
+      .catch(error => console.error(error));
+    ```
+  </Tab>
+  <Tab title="Content Rephrasing">
+    ```javascript
+    const axios = require('axios');
+    
+    /**
+     * Rephrase content using StealthGPT API
+     * 
+     * @param {string} text - The text to rephrase
+     * @param {Object} options - Optional parameters
+     * @param {string} options.tone - Standard, HighSchool, College, or PhD
+     * @param {string} options.mode - High, Medium, or Low detail level
+     * @param {boolean} options.business - Whether to use business mode
+     * @param {boolean} options.isMultilingual - Whether to allow multilingual output
+     * @returns {Promise<string>} - Rephrased content
+     */
+    async function rephraseContent(text, options = {}) {
+      const apiToken = 'YOUR_API_TOKEN';
+      const url = 'https://stealthgpt.ai/api/stealthify';
+      
+      // Prepare request payload
+      const payload = {
+        prompt: text,
+        rephrase: true,
+        ...options
+      };
+      
+      try {
+        // Send request
+        const response = await axios.post(url, payload, {
+          headers: {
+            'api-token': apiToken,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        return response.data.response;
+      } catch (error) {
+        if (error.response) {
+          throw new Error(`Error ${error.response.status}: ${JSON.stringify(error.response.data)}`);
+        } else {
+          throw error;
+        }
+      }
+    }
+    
+    // Example usage
+    rephraseContent(
+      'Artificial intelligence is transforming many industries by automating tasks that previously required human intelligence.',
+      {
+        tone: 'PhD'
+      }
+    )
+      .then(content => console.log(content))
+      .catch(error => console.error(error));
+    ```
+  </Tab>
+  <Tab title="Article Generation">
+    ```javascript
+    const axios = require('axios');
+    
+    /**
+     * Generate a complete blog article using StealthGPT API
+     * 
+     * @param {string} topic - The topic for the article
+     * @param {Object} options - Optional parameters
+     * @param {boolean} options.withImages - Whether to include images
+     * @param {string} options.size - "small", "medium", or "long"
+     * @param {boolean} options.isMultilingual - Whether to allow multilingual output
+     * @returns {Promise<string>} - Markdown content of the generated article
+     */
+    async function generateArticle(topic, options = {}) {
+      const apiToken = 'YOUR_API_TOKEN';
+      const url = 'https://stealthgpt.ai/api/stealthify/articles';
+      
+      // Prepare request payload with defaults
+      const payload = {
+        prompt: topic,
+        withImages: options.withImages !== undefined ? options.withImages : true,
+        size: options.size || 'medium',
+        isMultilingual: options.isMultilingual !== undefined ? options.isMultilingual : true
+      };
+      
+      try {
+        // Send request
+        const response = await axios.post(url, payload, {
+          headers: {
+            'api-token': apiToken,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        return response.data.markdown;
+      } catch (error) {
+        if (error.response) {
+          throw new Error(`Error ${error.response.status}: ${JSON.stringify(error.response.data)}`);
+        } else {
+          throw error;
+        }
+      }
+    }
+    
+    // Example usage
+    generateArticle(
+      'The future of remote work in the tech industry',
+      { size: 'medium' }
+    )
+      .then(article => console.log(article))
+      .catch(error => console.error(error));
+    ```
+  </Tab>
+</Tabs>
+
+## Ruby
+
+<Tabs>
+  <Tab title="Content Generation">
+    ```ruby
+    require 'net/http'
+    require 'uri'
+    require 'json'
+    
+    def generate_content(prompt, tone: nil, mode: nil, business: false, is_multilingual: true)
+      api_token = 'YOUR_API_TOKEN'
+      url = URI.parse('https://stealthgpt.ai/api/stealthify')
+      
+      # Prepare request payload
+      payload = {
+        prompt: prompt,
+        rephrase: false
+      }
+      
+      # Add optional parameters if provided
+      payload[:tone] = tone if tone
+      payload[:mode] = mode if mode
+      payload[:business] = business if business
+      payload[:isMultilingual] = is_multilingual unless is_multilingual
+      
+      # Set up the HTTP request
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true
+      request = Net::HTTP::Post.new(url.path)
+      request['api-token'] = api_token
+      request['Content-Type'] = 'application/json'
+      request.body = payload.to_json
+      
+      # Send the request
+      response = http.request(request)
+      
+      # Check for successful response
+      if response.code == '200'
+        return JSON.parse(response.body)['response']
+      else
+        raise "Error #{response.code}: #{response.body}"
+      end
+    end
+    
+    # Example usage
+    content = generate_content(
+      "Explain the benefits of cloud computing for small businesses",
+      tone: "College",
+      mode: "Medium"
+    )
+    puts content
+    ```
+  </Tab>
+  <Tab title="Content Rephrasing">
+    ```ruby
+    require 'net/http'
+    require 'uri'
+    require 'json'
+    
+    def rephrase_content(text, tone: nil, mode: nil, business: false, is_multilingual: true)
+      api_token = 'YOUR_API_TOKEN'
+      url = URI.parse('https://stealthgpt.ai/api/stealthify')
+      
+      # Prepare request payload
+      payload = {
+        prompt: text,
+        rephrase: true
+      }
+      
+      # Add optional parameters if provided
+      payload[:tone] = tone if tone
+      payload[:mode] = mode if mode
+      payload[:business] = business if business
+      payload[:isMultilingual] = is_multilingual unless is_multilingual
+      
+      # Set up the HTTP request
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true
+      request = Net::HTTP::Post.new(url.path)
+      request['api-token'] = api_token
+      request['Content-Type'] = 'application/json'
+      request.body = payload.to_json
+      
+      # Send the request
+      response = http.request(request)
+      
+      # Check for successful response
+      if response.code == '200'
+        return JSON.parse(response.body)['response']
+      else
+        raise "Error #{response.code}: #{response.body}"
+      end
+    end
+    
+    # Example usage
+    rephrased = rephrase_content(
+      "Artificial intelligence is transforming many industries by automating tasks that previously required human intelligence.",
+      tone: "PhD"
+    )
+    puts rephrased
+    ```
+  </Tab>
+  <Tab title="Article Generation">
+    ```ruby
+    require 'net/http'
+    require 'uri'
+    require 'json'
+    
+    def generate_article(topic, with_images: true, size: 'medium', is_multilingual: true)
+      api_token = 'YOUR_API_TOKEN'
+      url = URI.parse('https://stealthgpt.ai/api/stealthify/articles')
+      
+      # Prepare request payload
+      payload = {
+        prompt: topic,
+        withImages: with_images,
+        size: size
+      }
+      
+      # Add multilingual parameter only if false (since true is default)
+      payload[:isMultilingual] = is_multilingual unless is_multilingual
+      
+      # Set up the HTTP request
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true
+      request = Net::HTTP::Post.new(url.path)
+      request['api-token'] = api_token
+      request['Content-Type'] = 'application/json'
+      request.body = payload.to_json
+      
+      # Send the request
+      response = http.request(request)
+      
+      # Check for successful response
+      if response.code == '200'
+        return JSON.parse(response.body)['markdown']
+      else
+        raise "Error #{response.code}: #{response.body}"
+      end
+    end
+    
+    # Example usage
+    article = generate_article(
+      "The future of remote work in the tech industry",
+      size: "medium"
+    )
+    puts article
+    ```
+  </Tab>
+</Tabs>
+
+## Additional Languages
+
+For examples in other programming languages or for more complex integration scenarios, please refer to the following resources:
+
+- [Community SDKs and Libraries](https://github.com/stealthgpt/api-clients)
+- [API Reference Documentation](/api-reference/endpoints/stealthify) 

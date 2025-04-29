@@ -1,0 +1,203 @@
+---
+title: 'Error Handling'
+description: 'Understand and resolve common errors with the StealthGPT API'
+---
+
+# Error Handling
+
+This guide helps you understand and resolve common errors you might encounter when using the StealthGPT API.
+
+## HTTP Status Codes
+
+The StealthGPT API uses standard HTTP status codes to indicate the success or failure of requests:
+
+<ResponseField name="200 OK" type="success">
+  The request was successful and the response contains the expected data.
+</ResponseField>
+
+<ResponseField name="400 Bad Request" type="error">
+  The request was malformed or contained invalid parameters.
+</ResponseField>
+
+<ResponseField name="401 Unauthorized" type="error">
+  Authentication failed, usually due to an invalid or missing API token.
+</ResponseField>
+
+<ResponseField name="429 Too Many Requests" type="error">
+  You've exceeded the rate limits for the API.
+</ResponseField>
+
+<ResponseField name="500 Internal Server Error" type="error">
+  An error occurred on the server. These are typically temporary.
+</ResponseField>
+
+## Common Errors and Solutions
+
+### Authentication Errors
+
+<AccordionGroup>
+  <Accordion title="Invalid API Token">
+    **Error:** 401 Unauthorized
+    
+    **Solution:** Verify that you're including the correct API token in the `api-token` header. Check your StealthGPT dashboard under the "API Key" tab for the correct token.
+    
+    ```bash
+    # Incorrect
+    --header 'api-token: invalid_token'
+    
+    # Correct
+    --header 'api-token: your_valid_token_here'
+    ```
+  </Accordion>
+  
+  <Accordion title="Missing API Token">
+    **Error:** 401 Unauthorized
+    
+    **Solution:** Ensure you're including the `api-token` header in all requests.
+    
+    ```bash
+    # Missing header
+    curl --location 'https://stealthgpt.ai/api/stealthify' \
+        --header 'Content-Type: application/json' \
+        --data '{ "prompt": "test", "rephrase": false }'
+    
+    # Correct
+    curl --location 'https://stealthgpt.ai/api/stealthify' \
+        --header 'api-token: YOUR_API_TOKEN' \
+        --header 'Content-Type: application/json' \
+        --data '{ "prompt": "test", "rephrase": false }'
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Request Errors
+
+<AccordionGroup>
+  <Accordion title="Missing Required Parameters">
+    **Error:** 400 Bad Request
+    
+    **Solution:** Ensure all required parameters are included in your request. For the `/api/stealthify` endpoint, both `prompt` and `rephrase` are required.
+    
+    ```bash
+    # Missing rephrase parameter
+    --data '{ "prompt": "test" }'
+    
+    # Correct
+    --data '{ "prompt": "test", "rephrase": false }'
+    ```
+  </Accordion>
+  
+  <Accordion title="Invalid Parameter Values">
+    **Error:** 400 Bad Request
+    
+    **Solution:** Check that parameter values are in the correct format.
+    
+    ```bash
+    # Invalid boolean value (should be true/false, not "true"/"false")
+    --data '{ "prompt": "test", "rephrase": "false" }'
+    
+    # Correct
+    --data '{ "prompt": "test", "rephrase": false }'
+    ```
+  </Accordion>
+  
+  <Accordion title="Empty Prompt">
+    **Error:** 400 Bad Request
+    
+    **Solution:** Ensure the prompt parameter contains non-empty content.
+    
+    ```bash
+    # Empty prompt
+    --data '{ "prompt": "", "rephrase": false }'
+    
+    # Correct
+    --data '{ "prompt": "Write about renewable energy", "rephrase": false }'
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Rate Limit Errors
+
+<AccordionGroup>
+  <Accordion title="Too Many Requests">
+    **Error:** 429 Too Many Requests
+    
+    **Solution:** Implement request throttling in your application and avoid making too many requests in a short period.
+    
+    ```python
+    # Python example with retry logic
+    import requests
+    import time
+    
+    def call_api_with_retry(url, headers, data, max_retries=3, retry_delay=5):
+        for attempt in range(max_retries):
+            response = requests.post(url, headers=headers, json=data)
+            
+            if response.status_code == 429:
+                # Wait before retrying
+                time.sleep(retry_delay)
+                continue
+                
+            return response
+            
+        return response  # Return last response if all retries failed
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices for Error Handling
+
+1. **Implement Retry Logic**: For transient errors (like 429 or 500), implement retry logic with exponential backoff.
+
+2. **Validate Inputs**: Validate all parameters before sending requests to avoid 400 errors.
+
+3. **Check Response Status**: Always check the HTTP status code before trying to process the response.
+
+4. **Error Logging**: Log detailed error information for troubleshooting.
+
+5. **Handle Errors Gracefully**: Provide user-friendly error messages in your application rather than exposing raw API errors.
+
+```javascript
+// Node.js example of comprehensive error handling
+async function callStealthGPT(prompt, rephrase) {
+  try {
+    const response = await axios.post('https://stealthgpt.ai/api/stealthify', {
+      prompt,
+      rephrase
+    }, {
+      headers: {
+        'api-token': process.env.API_TOKEN,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    // Handle different error types
+    if (error.response) {
+      // The request was made and server responded with an error code
+      switch (error.response.status) {
+        case 400:
+          console.error('Invalid request parameters:', error.response.data);
+          throw new Error('Invalid request. Please check your input parameters.');
+        case 401:
+          console.error('Authentication failed');
+          throw new Error('API authentication failed. Please check your API token.');
+        case 429:
+          console.error('Rate limit exceeded');
+          throw new Error('Too many requests. Please try again later.');
+        default:
+          console.error(`Error ${error.response.status}:`, error.response.data);
+          throw new Error('An error occurred while processing your request.');
+      }
+    } else if (error.request) {
+      // The request was made but no response received
+      console.error('No response received:', error.request);
+      throw new Error('No response from server. Please check your connection.');
+    } else {
+      // Something else caused the error
+      console.error('Error setting up request:', error.message);
+      throw new Error('Failed to send request.');
+    }
+  }
+} 

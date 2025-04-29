@@ -1,0 +1,87 @@
+---
+title: 'Quick Start Guide'
+description: 'Get started with the StealthGPT API in minutes'
+---
+
+<Steps>
+  <Step title="Sign Up and Get API Key">
+    Create an account on the [StealthGPT platform](https://stealthgpt.ai) and purchase tokens to access the API. Your API key will be available in the dashboard under the "API Key" tab.
+  </Step>
+
+  <Step title="Choose Your Endpoint">
+    StealthGPT offers two main endpoints:
+    
+    <CardGroup cols={2}>
+      <Card title="/api/stealthify" icon="wand-magic-sparkles">
+        Generate or rephrase content based on your prompt
+      </Card>
+      <Card title="/api/stealthify/articles" icon="newspaper">
+        Create complete undetectable blog articles with images
+      </Card>
+    </CardGroup>
+  </Step>
+
+  <Step title="Send Your First Request">
+    Make your first API call using one of our code examples:
+
+    <CodeGroup>
+      <CodeBlock language="bash" title="cURL">
+        ```bash
+        curl --location 'https://stealthgpt.ai/api/stealthify' \
+            --header 'api-token: YOUR_API_TOKEN' \
+            --header 'Content-Type: application/json' \
+            --data '{
+                "prompt": "Write a paragraph about artificial intelligence",
+                "rephrase": false
+            }'
+        ```
+      </CodeBlock>
+      <CodeBlock language="python" title="Python">
+        ```python
+        import requests
+
+        response = requests.post(
+            'https://stealthgpt.ai/api/stealthify',
+            headers={
+                'api-token': 'YOUR_API_TOKEN',
+                'Content-Type': 'application/json'
+            },
+            json={
+                'prompt': 'Write a paragraph about artificial intelligence',
+                'rephrase': False
+            }
+        )
+
+        print(response.json())
+        ```
+      </CodeBlock>
+      <CodeBlock language="javascript" title="Node.js">
+        ```javascript
+        const axios = require('axios');
+
+        axios.post('https://stealthgpt.ai/api/stealthify', {
+            prompt: 'Write a paragraph about artificial intelligence',
+            rephrase: false
+        }, {
+            headers: {
+                'api-token': 'YOUR_API_TOKEN',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            console.log(response.data);
+        });
+        ```
+      </CodeBlock>
+    </CodeGroup>
+  </Step>
+
+  <Step title="Explore and Experiment">
+    Experiment with different parameters and settings to optimize your content generation. Check our [API Reference](/api-reference/endpoints/stealthify) for detailed parameter options.
+  </Step>
+</Steps>
+
+## What's Next?
+
+- Learn about all available [API endpoints](/api-reference/endpoints/stealthify)
+- Explore [advanced usage techniques](/api-reference/advanced-usage)
+- View [code examples](/api-reference/code-examples) in various programming languages 

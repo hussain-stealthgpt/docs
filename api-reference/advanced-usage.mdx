@@ -1,0 +1,124 @@
+---
+title: 'Advanced Usage'
+description: 'Tips and techniques for optimal use of StealthGPT API'
+---
+
+# Advanced Usage Techniques
+
+Master these techniques to get the most out of the StealthGPT API for your content generation and rephrasing needs.
+
+## Optimizing Tone Selection
+
+StealthGPT offers several tone options to match your content needs:
+
+<Card title="Tone Options" icon="sliders">
+  <CardGroup cols={2}>
+    <Card title="Standard" icon="pen">
+      Default tone for general-purpose content. Balanced readability and formality.
+    </Card>
+    <Card title="HighSchool" icon="graduation-cap">
+      Simpler style with occasional grammatical errors. High on Flesch-Kincaid Readability.
+    </Card>
+    <Card title="College" icon="book">
+      Semi-complex style with occasional minor errors. Medium Flesch-Kincaid score.
+    </Card>
+    <Card title="PhD" icon="user-graduate">
+      Complex, sophisticated style. No grammatical errors. Low Flesch-Kincaid score.
+    </Card>
+  </CardGroup>
+</Card>
+
+Choose the tone that best matches your target audience and content requirements.
+
+## Crafting Effective Prompts
+
+The quality of generated content depends significantly on your prompt. Here are some techniques to improve your prompts:
+
+<AccordionGroup>
+  <Accordion title="Be Specific">
+    Instead of: "Write about cars"
+    
+    Try: "Write about the environmental impact of electric vehicles compared to traditional combustion engines"
+  </Accordion>
+  
+  <Accordion title="Include Context">
+    Instead of: "Write a product description"
+    
+    Try: "Write a product description for a premium leather wallet targeted at young professionals who value both style and functionality"
+  </Accordion>
+  
+  <Accordion title="Specify Format">
+    Instead of: "Write about climate change"
+    
+    Try: "Create a 5-point listicle about practical steps individuals can take to reduce their carbon footprint"
+  </Accordion>
+  
+  <Accordion title="Define Voice and Tone">
+    Instead of: "Write about cryptocurrency"
+    
+    Try: "Explain cryptocurrency concepts in a conversational tone as if speaking to someone with no technical background"
+  </Accordion>
+</AccordionGroup>
+
+## Content Length Optimization
+
+For optimal performance, we recommend keeping responses under 2,000 characters. When you need longer content:
+
+1. Break down your content needs into smaller, focused requests
+2. Use the `/api/stealthify/articles` endpoint for complete blog articles
+3. Chain multiple requests together, using the output of one as input for another
+
+## Using Templates
+
+You can include templates in your prompts to guide the structure of generated content:
+
+```json
+{
+  "prompt": "Please write an email following this template:\n\nSubject: [Product] - New Features\n\nHello [Name],\n\nI'm excited to share the latest updates to [Product]...\n\nBest regards,\n[Your Name]",
+  "rephrase": false
+}
+```
+
+## Iterative Rephrasing
+
+For maximum undetectability, consider an iterative approach:
+
+<Steps>
+  <Step title="Generate Initial Content">
+    Create the first version of your content with `rephrase: false`
+  </Step>
+  <Step title="First Rephrasing">
+    Submit the generated content with `rephrase: true`
+  </Step>
+  <Step title="Second Rephrasing">
+    For even higher undetectability, submit the rephrased content for another round
+  </Step>
+</Steps>
+
+<Warning>
+  Too many rephrasing iterations may affect content coherence or meaning. Test and find the optimal balance.
+</Warning>
+
+## Multilingual Support
+
+StealthGPT automatically detects and works with any language. To use this feature effectively:
+
+- Ensure your prompt is written in your target language
+- Keep the `isMultilingual` parameter set to `true` (default)
+- For content that switches between languages, provide examples in your prompt
+
+## Business Mode for Critical Content
+
+When undetectability and quality are paramount:
+
+<Note>
+  Setting `business: true` uses a model 10x more powerful than the standard engine, significantly improving content quality and undetectability.
+</Note>
+
+This is particularly useful for:
+- Academic content
+- Professional documents
+- Content that will undergo AI detection scrutiny
+- Technical or complex subjects
+
+Remember that business mode consumes tokens at a higher rate. 
