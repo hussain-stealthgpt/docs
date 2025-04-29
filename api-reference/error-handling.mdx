@@ -1,11 +1,7 @@
 ---
 title: 'Error Handling'
-description: 'Understand and resolve common errors with the StealthGPT API'
+description: 'Learn how to handle and resolve common errors you might encounter when using the StealthGPT API'
 ---
-
-# Error Handling
-
-This guide helps you understand and resolve common errors you might encounter when using the StealthGPT API.
 
 ## HTTP Status Codes
 
@@ -145,6 +141,216 @@ The StealthGPT API uses standard HTTP status codes to indicate the success or fa
   </Accordion>
 </AccordionGroup>
 
+### Network and Server Errors
+
+<AccordionGroup>
+  <Accordion title="Network Timeout">
+    **Error:** 504 Gateway Timeout
+    
+    **Solution:** Implement timeout handling and retry logic for network issues.
+    
+    ```python
+    # Python example with timeout handling
+    import requests
+    from requests.exceptions import Timeout, ConnectionError
+    
+    def call_api_with_timeout(prompt, rephrase, timeout=10):
+        try:
+            response = requests.post(
+                'https://stealthgpt.ai/api/stealthify',
+                headers={
+                    'api-token': 'YOUR_API_TOKEN',
+                    'Content-Type': 'application/json'
+                },
+                json={
+                    'prompt': prompt,
+                    'rephrase': rephrase
+                },
+                timeout=timeout
+            )
+            response.raise_for_status()
+            return response.json()
+        except Timeout:
+            print("Request timed out. The server might be experiencing high load.")
+            raise
+        except ConnectionError:
+            print("Network connection error. Please check your internet connection.")
+            raise
+    ```
+  </Accordion>
+  
+  <Accordion title="Server Error">
+    **Error:** 500 Internal Server Error
+    
+    **Solution:** Implement exponential backoff retry logic for server-side errors.
+    
+    ```go
+    // Go example with exponential backoff
+    package main
+
+    import (
+        "bytes"
+        "encoding/json"
+        "fmt"
+        "net/http"
+        "time"
+    )
+
+    func callAPIWithBackoff(prompt string, rephrase bool) (*http.Response, error) {
+        maxRetries := 3
+        baseDelay := time.Second
+
+        requestBody, _ := json.Marshal(map[string]interface{}{
+            "prompt":   prompt,
+            "rephrase": rephrase,
+        })
+
+        for i := 0; i < maxRetries; i++ {
+            req, _ := http.NewRequest("POST", "https://stealthgpt.ai/api/stealthify", 
+                bytes.NewBuffer(requestBody))
+            
+            req.Header.Set("api-token", "YOUR_API_TOKEN")
+            req.Header.Set("Content-Type", "application/json")
+
+            resp, err := http.DefaultClient.Do(req)
+            if err != nil {
+                return nil, err
+            }
+
+            if resp.StatusCode != 500 {
+                return resp, nil
+            }
+
+            // Exponential backoff
+            delay := baseDelay * time.Duration(1<<uint(i))
+            time.Sleep(delay)
+        }
+
+        return nil, fmt.Errorf("max retries exceeded")
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Language-Specific Error Handling Examples
+
+Here are comprehensive error handling examples in different programming languages:
+
+<CodeGroup>
+```python Python
+import requests
+from requests.exceptions import RequestException
+import time
+
+class StealthGPTError(Exception):
+    """Custom exception for StealthGPT API errors"""
+    pass
+
+def call_stealthgpt_api(prompt, rephrase, max_retries=3):
+    headers = {
+        'api-token': 'YOUR_API_TOKEN',
+        'Content-Type': 'application/json'
+    }
+    data = {
+        'prompt': prompt,
+        'rephrase': rephrase
+    }
+
+    for attempt in range(max_retries):
+        try:
+            response = requests.post(
+                'https://stealthgpt.ai/api/stealthify',
+                headers=headers,
+                json=data,
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                return response.json()
+                
+            if response.status_code == 429:
+                retry_after = int(response.headers.get('Retry-After', 5))
+                time.sleep(retry_after)
+                continue
+                
+            if response.status_code == 400:
+                raise StealthGPTError(f"Invalid request: {response.json().get('error')}")
+                
+            if response.status_code == 401:
+                raise StealthGPTError("Invalid API token")
+                
+            response.raise_for_status()
+            
+        except requests.exceptions.Timeout:
+            if attempt == max_retries - 1:
+                raise StealthGPTError("Request timed out after multiple attempts")
+            time.sleep(2 ** attempt)  # Exponential backoff
+            
+        except requests.exceptions.RequestException as e:
+            raise StealthGPTError(f"Request failed: {str(e)}")
+            
+    raise StealthGPTError("Max retries exceeded")
+```
+
+```javascript JavaScript
+class StealthGPTClient {
+  constructor(apiToken) {
+    this.apiToken = apiToken;
+    this.baseURL = 'https://stealthgpt.ai/api';
+    this.maxRetries = 3;
+  }
+
+  async stealthify(prompt, rephrase) {
+    let lastError;
+    
+    for (let attempt = 0; attempt < this.maxRetries; attempt++) {
+      try {
+        const response = await fetch(`${this.baseURL}/stealthify`, {
+          method: 'POST',
+          headers: {
+            'api-token': this.apiToken,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ prompt, rephrase }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          
+          switch (response.status) {
+            case 400:
+              throw new Error(`Invalid request: ${errorData.error}`);
+            case 401:
+              throw new Error('Invalid API token');
+            case 429:
+              const retryAfter = parseInt(response.headers.get('Retry-After') || '5');
+              await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
+              continue;
+            default:
+              throw new Error(`API error: ${errorData.error}`);
+          }
+        }
+
+        return await response.json();
+        
+      } catch (error) {
+        lastError = error;
+        
+        if (error.message.includes('Invalid')) {
+          throw error; // Don't retry client errors
+        }
+        
+        // Exponential backoff for other errors
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+      }
+    }
+
+    throw lastError || new Error('Max retries exceeded');
+  }
+}
+```
+</CodeGroup>
+
 ## Best Practices for Error Handling
 
 1. **Implement Retry Logic**: For transient errors (like 429 or 500), implement retry logic with exponential backoff.
@@ -201,3 +407,20 @@ async function callStealthGPT(prompt, rephrase) {
     }
   }
 } 
+```
+
+## Error Response Format
+
+All error responses follow this consistent format:
+
+```json
+{
+  "error": {
+    "code": "error_code",
+    "message": "Human-readable error message",
+    "details": {
+      // Additional error context if available
+    }
+  }
+}
+```
