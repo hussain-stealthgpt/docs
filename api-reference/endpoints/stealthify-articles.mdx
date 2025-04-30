@@ -20,14 +20,16 @@ The `/api/stealthify/articles` endpoint generates complete, undetectable blog ar
   Controls the length of the generated article
   
   <Expandable title="Available size options">
-    <ResponseField name="small">
-      Shortest article length, ideal for brief overviews
-    </ResponseField>
-    <ResponseField name="medium">
-      Standard blog article length with moderate detail
-    </ResponseField>
-    <ResponseField name="long">
-      Comprehensive long-form content with in-depth coverage
+    <ResponseField>
+      <ResponseField name="small">
+        Shortest article length, ideal for brief overviews
+      </ResponseField>
+      <ResponseField name="medium">
+        Standard blog article length with moderate detail
+      </ResponseField>
+      <ResponseField name="long">
+        Comprehensive long-form content with in-depth coverage
+      </ResponseField>
     </ResponseField>
   </Expandable>
 </ParamField>
@@ -45,8 +47,7 @@ The `/api/stealthify/articles` endpoint generates complete, undetectable blog ar
 ## Example Request
 
 <CodeGroup>
-  <CodeBlock title="cURL" language="bash">
-  ```bash
+  ```bash curl-example
   curl --request POST \
     --url https://stealthgpt.ai/api/stealthify/articles \
     --header 'Content-Type: application/json' \
@@ -58,9 +59,8 @@ The `/api/stealthify/articles` endpoint generates complete, undetectable blog ar
     "isMultilingual": true
   }'
   ```
-  </CodeBlock>
-  <CodeBlock title="Python" language="python">
-  ```python
+
+  ```python python-example
   import requests
   
   response = requests.post(
@@ -79,9 +79,8 @@ The `/api/stealthify/articles` endpoint generates complete, undetectable blog ar
   
   print(response.json())
   ```
-  </CodeBlock>
-  <CodeBlock title="Node.js" language="javascript">
-  ```javascript
+
+  ```javascript nodejs-example
   const axios = require('axios');
   
   axios.post('https://stealthgpt.ai/api/stealthify/articles', {
@@ -98,7 +97,6 @@ The `/api/stealthify/articles` endpoint generates complete, undetectable blog ar
       console.log(response.data);
   });
   ```
-  </CodeBlock>
 </CodeGroup>
 
 ## Example Response

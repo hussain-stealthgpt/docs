@@ -7,24 +7,26 @@ description: 'Learn how to handle and resolve common errors you might encounter 
 
 The StealthGPT API uses standard HTTP status codes to indicate the success or failure of requests:
 
-<ResponseField name="200 OK" type="success">
-  The request was successful and the response contains the expected data.
-</ResponseField>
+<ResponseField>
+  <ResponseField name="200 OK" type="success">
+    The request was successful and the response contains the expected data.
+  </ResponseField>
 
-<ResponseField name="400 Bad Request" type="error">
-  The request was malformed or contained invalid parameters.
-</ResponseField>
+  <ResponseField name="400 Bad Request" type="error">
+    The request was malformed or contained invalid parameters.
+  </ResponseField>
 
-<ResponseField name="401 Unauthorized" type="error">
-  Authentication failed, usually due to an invalid or missing API token.
-</ResponseField>
+  <ResponseField name="401 Unauthorized" type="error">
+    Authentication failed, usually due to an invalid or missing API token.
+  </ResponseField>
 
-<ResponseField name="429 Too Many Requests" type="error">
-  You've exceeded the rate limits for the API.
-</ResponseField>
+  <ResponseField name="429 Too Many Requests" type="error">
+    You've exceeded the rate limits for the API.
+  </ResponseField>
 
-<ResponseField name="500 Internal Server Error" type="error">
-  An error occurred on the server. These are typically temporary.
+  <ResponseField name="500 Internal Server Error" type="error">
+    An error occurred on the server. These are typically temporary.
+  </ResponseField>
 </ResponseField>
 
 ## Common Errors and Solutions

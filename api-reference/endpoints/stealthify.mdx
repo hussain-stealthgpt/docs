@@ -20,17 +20,19 @@ The `/api/stealthify` endpoint is the core of the StealthGPT API, allowing you t
   Controls the style and complexity of the generated content
   
   <Expandable title="Available tone options">
-    <ResponseField name="Standard" type="default">
-      Ideal for casual writing. Easy to read and understand, suitable for general purposes.
-    </ResponseField>
-    <ResponseField name="HighSchool">
-      Mimics the style of high school level writing. May contain grammatical errors. Scores high on Flesch-Kincaid Readability.
-    </ResponseField>
-    <ResponseField name="College">
-      Semi-complex style typical of college-level writing. May include minor grammatical errors. Moderate Flesch-Kincaid Readability score.
-    </ResponseField>
-    <ResponseField name="PhD">
-      Complex, sophisticated style. No grammatical errors. Low Flesch-Kincaid Readability score, ideal for academic writing.
+    <ResponseField>
+      <ResponseField name="Standard" type="default">
+        Ideal for casual writing. Easy to read and understand, suitable for general purposes.
+      </ResponseField>
+      <ResponseField name="HighSchool">
+        Mimics the style of high school level writing. May contain grammatical errors. Scores high on Flesch-Kincaid Readability.
+      </ResponseField>
+      <ResponseField name="College">
+        Semi-complex style typical of college-level writing. May include minor grammatical errors. Moderate Flesch-Kincaid Readability score.
+      </ResponseField>
+      <ResponseField name="PhD">
+        Complex, sophisticated style. No grammatical errors. Low Flesch-Kincaid Readability score, ideal for academic writing.
+      </ResponseField>
     </ResponseField>
   </Expandable>
 </ParamField>
@@ -39,14 +41,16 @@ The `/api/stealthify` endpoint is the core of the StealthGPT API, allowing you t
   Indicates the detail level of the response
   
   <Expandable title="Available mode options">
-    <ResponseField name="High">
-      Maximum detail and elaboration in the response
-    </ResponseField>
-    <ResponseField name="Medium">
-      Balanced level of detail
-    </ResponseField>
-    <ResponseField name="Low">
-      Concise response with minimal detail
+    <ResponseField>
+      <ResponseField name="High">
+        Maximum detail and elaboration in the response
+      </ResponseField>
+      <ResponseField name="Medium">
+        Balanced level of detail
+      </ResponseField>
+      <ResponseField name="Low">
+        Concise response with minimal detail
+      </ResponseField>
     </ResponseField>
   </Expandable>
 </ParamField>
@@ -68,8 +72,7 @@ The `/api/stealthify` endpoint is the core of the StealthGPT API, allowing you t
 ## Example Request
 
 <CodeGroup>
-  <CodeBlock title="cURL" language="bash">
-  ```bash
+  ```bash curl-example
   curl --location 'https://stealthgpt.ai/api/stealthify' \
       --header 'api-token: YOUR_API_TOKEN' \
       --header 'Content-Type: application/json' \
@@ -82,9 +85,8 @@ The `/api/stealthify` endpoint is the core of the StealthGPT API, allowing you t
           "isMultilingual": true
       }'
   ```
-  </CodeBlock>
-  <CodeBlock title="Python" language="python">
-  ```python
+
+  ```python python-example
   import requests
   
   response = requests.post(
@@ -105,9 +107,8 @@ The `/api/stealthify` endpoint is the core of the StealthGPT API, allowing you t
   
   print(response.json())
   ```
-  </CodeBlock>
-  <CodeBlock title="Node.js" language="javascript">
-  ```javascript
+
+  ```javascript nodejs-example
   const axios = require('axios');
   
   axios.post('https://stealthgpt.ai/api/stealthify', {
@@ -126,7 +127,6 @@ The `/api/stealthify` endpoint is the core of the StealthGPT API, allowing you t
       console.log(response.data);
   });
   ```
-  </CodeBlock>
 </CodeGroup>
 
 ## Example Response
