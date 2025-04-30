@@ -25,53 +25,49 @@ description: 'Get started with the StealthGPT API in minutes'
     Make your first API call using one of our code examples:
 
     <CodeGroup>
-      <CodeBlock language="bash" title="cURL">
-        ```bash
-        curl --location 'https://stealthgpt.ai/api/stealthify' \
-            --header 'api-token: YOUR_API_TOKEN' \
-            --header 'Content-Type: application/json' \
-            --data '{
-                "prompt": "Write a paragraph about artificial intelligence",
-                "rephrase": false
-            }'
-        ```
-      </CodeBlock>
-      <CodeBlock language="python" title="Python">
-        ```python
-        import requests
+      ```bash curl-example
+      curl --location 'https://stealthgpt.ai/api/stealthify' \
+          --header 'api-token: YOUR_API_TOKEN' \
+          --header 'Content-Type: application/json' \
+          --data '{
+              "prompt": "Write a paragraph about artificial intelligence",
+              "rephrase": false
+          }'
+      ```
 
-        response = requests.post(
-            'https://stealthgpt.ai/api/stealthify',
-            headers={
-                'api-token': 'YOUR_API_TOKEN',
-                'Content-Type': 'application/json'
-            },
-            json={
-                'prompt': 'Write a paragraph about artificial intelligence',
-                'rephrase': False
-            }
-        )
+      ```python python-example
+      import requests
 
-        print(response.json())
-        ```
-      </CodeBlock>
-      <CodeBlock language="javascript" title="Node.js">
-        ```javascript
-        const axios = require('axios');
+      response = requests.post(
+          'https://stealthgpt.ai/api/stealthify',
+          headers={
+              'api-token': 'YOUR_API_TOKEN',
+              'Content-Type': 'application/json'
+          },
+          json={
+              'prompt': 'Write a paragraph about artificial intelligence',
+              'rephrase': False
+          }
+      )
 
-        axios.post('https://stealthgpt.ai/api/stealthify', {
-            prompt: 'Write a paragraph about artificial intelligence',
-            rephrase: false
-        }, {
-            headers: {
-                'api-token': 'YOUR_API_TOKEN',
-                'Content-Type': 'application/json'
-            }
-        }).then(response => {
-            console.log(response.data);
-        });
-        ```
-      </CodeBlock>
+      print(response.json())
+      ```
+
+      ```javascript nodejs-example
+      const axios = require('axios');
+
+      axios.post('https://stealthgpt.ai/api/stealthify', {
+          prompt: 'Write a paragraph about artificial intelligence',
+          rephrase: false
+      }, {
+          headers: {
+              'api-token': 'YOUR_API_TOKEN',
+              'Content-Type': 'application/json'
+          }
+      }).then(response => {
+          console.log(response.data);
+      });
+      ```
     </CodeGroup>
   </Step>
 
